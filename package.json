@@ -7,9 +7,11 @@
   },
   "scripts": {
     "dev": "tsx watch src/server.ts",
+    "lint": "eslint src --ext .ts --fix",
     "knex": "ts-node ./node_modules/.bin/knex",
     "migrate": "knex -- migrate:latest",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest",
+    "test:staged": "vitest --findRelatedTests --no-watch"
   },
   "author": "",
   "license": "ISC",
@@ -26,7 +28,10 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
+    "@types/supertest": "^2.0.12",
     "fastify": "^4.21.0",
-    "knex": "^2.5.1"
+    "knex": "^2.5.1",
+    "supertest": "^6.3.3",
+    "vitest": "^0.34.1"
   }
 }
