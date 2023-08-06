@@ -11,7 +11,8 @@
     "knex": "ts-node ./node_modules/.bin/knex",
     "migrate": "knex -- migrate:latest",
     "test": "vitest",
-    "test:staged": "vitest --findRelatedTests --no-watch"
+    "test:staged": "vitest --findRelatedTests --no-watch",
+    "commitlint": "commitlint --edit"
   },
   "author": "",
   "license": "ISC",
