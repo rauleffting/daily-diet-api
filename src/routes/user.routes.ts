@@ -2,15 +2,10 @@ import { hash } from 'bcrypt'
 import { randomUUID } from 'crypto'
 import { type FastifyInstance } from 'fastify'
 import { knex } from '../database'
-import { z } from 'zod'
+import { createUserBodySchema } from '../schemas'
 
 export async function userRoutes (app: FastifyInstance): Promise<void> {
   app.post('/register', async (request, reply) => {
-    const createUserBodySchema = z.object({
-      email: z.string(),
-      password: z.string()
-    })
-
     try {
       const { email, password } = createUserBodySchema.parse(request.body)
 
