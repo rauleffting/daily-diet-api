@@ -12,7 +12,8 @@
     "migrate": "knex -- migrate:latest",
     "test": "vitest",
     "test:staged": "vitest --findRelatedTests --no-watch",
-    "commitlint": "commitlint --edit"
+    "commitlint": "commitlint --edit",
+    "prepare": "husky install"
   },
   "author": "",
   "license": "ISC",
