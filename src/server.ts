@@ -1,8 +1,12 @@
 import fastify from 'fastify'
+import { userRoutes } from './tests/unit/routes/user.routes'
+import { env } from './env'
 
 const app = fastify()
 
-const port = 3333
+app.register(userRoutes)
+
+const port = env.PORT
 
 app.listen({ port })
   .then(() => {
