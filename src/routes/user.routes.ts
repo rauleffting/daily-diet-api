@@ -1,7 +1,7 @@
-import { compare, hash } from 'bcrypt'
-import { randomUUID } from 'crypto'
 import { type FastifyInstance } from 'fastify'
 import { knex } from '../database'
+import { randomUUID } from 'node:crypto'
+import { compare, hash } from 'bcrypt'
 import { createUserBodySchema } from '../schemas'
 
 export async function userRoutes (app: FastifyInstance): Promise<void> {
@@ -14,7 +14,7 @@ export async function userRoutes (app: FastifyInstance): Promise<void> {
         .first()
 
       if (userExists) {
-        return await reply.status(509).send({ message: 'E-mail já cadastrado!' })
+        return await reply.status(409).send({ message: 'E-mail já cadastrado!' }) // Changed status code to 409 Conflict
       }
 
       const hashedPassword = await hash(password, 8)
@@ -25,7 +25,7 @@ export async function userRoutes (app: FastifyInstance): Promise<void> {
         password: hashedPassword
       })
 
-      return await reply.status(201).send({ message: 'User successfully created!' })
+      return await reply.status(201).send({ message: 'User successfully created!' }) // Using 201 for successful resource creation
     } catch (error) {
       console.error(error) // Log the error for debugging purposes
       return await reply.status(500).send({ message: 'Error creating user!' })
@@ -41,30 +41,29 @@ export async function userRoutes (app: FastifyInstance): Promise<void> {
         .first()
 
       if (!user) {
-        return await reply.status(509).send({ message: 'E-mail e/ou senha incorretos.' })
+        return await reply.status(401).send({ message: 'E-mail e/ou senha incorretos.' }) // Changed status code to 401 Unauthorized
       }
 
       const passwordMatched = await compare(password, user.password)
 
       if (!passwordMatched) {
-        return await reply.status(509).send({ message: 'E-mail e/ou senha incorretos.' })
+        return await reply.status(401).send({ message: 'E-mail e/ou senha incorretos.' }) // Changed status code to 401 Unauthorized
       }
 
       let sessionId = request.cookies.sessionId
 
-      if (sessionId === null) {
+      if (!sessionId) {
         sessionId = randomUUID()
 
         reply.cookie('sessionId', sessionId, {
-          path: '/',
-          maxAge: 1000 * 60 * 60 * 24 * 30 * 12 // 1 year
+          maxAge: 1000 * 60 * 60 * 24 * 365 // 365 days
         })
       }
 
-      return await reply.status(201).send({ message: 'User successfully logged!' })
+      return await reply.status(200).send({ message: 'User successfully logged!' }) // Using 200 for successful login
     } catch (error) {
       console.error(error) // Log the error for debugging purposes
-      return await reply.status(509).send({ message: 'Error trying to log in!' })
+      return await reply.status(500).send({ message: 'Error trying to log in!' })
     }
   })
 }
