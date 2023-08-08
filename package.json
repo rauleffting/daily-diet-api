@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "lint": "eslint src --ext .ts --fix",
-    "knex": "ts-node ./node_modules/.bin/knex",
+    "knex": "ts-node ./node_modules/knex/bin/cli",
     "migrate": "knex -- migrate:latest",
     "test": "vitest",
     "test:staged": "vitest --findRelatedTests --no-watch",
@@ -32,10 +32,10 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
+    "@fastify/cookie": "^9.0.4",
     "bcrypt": "^5.1.0",
     "dotenv": "^16.3.1",
     "fastify": "^4.21.0",
-    "@fastify/cookie": "^9.0.4",
     "knex": "^2.5.1",
     "supertest": "^6.3.3",
     "vitest": "^0.34.1",
