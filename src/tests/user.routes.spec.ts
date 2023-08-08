@@ -48,4 +48,18 @@ describe('User routes', () => {
     expect(response.status).toBe(200)
     expect(response.body).toEqual({ message: 'User successfully logged!' })
   })
+
+  it('should create a cookie when user logs in', async () => {
+    const mockUser = {
+      email: 'test@example.com',
+      password: 'test123'
+    }
+
+    await request(app.server).post('/register').send(mockUser)
+
+    const response = await request(app.server).post('/login').send(mockUser)
+
+    expect(response.header['set-cookie'][0]).toContain('sessionId=')
+    expect(response.header['set-cookie'][0]).toContain('Max-Age=')
+  })
 })
