@@ -21,7 +21,6 @@
   "devDependencies": {
     "@commitlint/cli": "^17.6.7",
     "@commitlint/config-conventional": "^17.6.7",
-    "@fastify/cookie": "^9.0.4",
     "@types/bcrypt": "^5.0.0",
     "@types/node": "^20.4.6",
     "@types/supertest": "^2.0.12",
@@ -36,6 +35,7 @@
     "bcrypt": "^5.1.0",
     "dotenv": "^16.3.1",
     "fastify": "^4.21.0",
+    "@fastify/cookie": "^9.0.4",
     "knex": "^2.5.1",
     "supertest": "^6.3.3",
     "vitest": "^0.34.1",
