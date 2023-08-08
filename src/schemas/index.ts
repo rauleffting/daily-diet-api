@@ -17,3 +17,7 @@ export const createMealBodySchema = z.object({
   description: z.string(),
   isDietMeal: z.boolean()
 })
+
+export const getMealParamsSchema = z.object({
+  id: z.string().uuid()
+})
