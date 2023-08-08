@@ -9,10 +9,6 @@ describe('User routes', () => {
     await app.ready()
   })
 
-  afterAll(async () => {
-    await app.close()
-  })
-
   beforeEach(() => {
     execSync('npm run knex migrate:rollback --all')
     execSync('npm run knex migrate:latest')
@@ -61,5 +57,42 @@ describe('User routes', () => {
 
     expect(response.header['set-cookie'][0]).toContain('sessionId=')
     expect(response.header['set-cookie'][0]).toContain('Max-Age=')
+  })
+})
+
+describe('Meal routes', () => {
+  afterAll(async () => {
+    await app.close()
+  })
+
+  beforeEach(() => {
+    execSync('npm run knex migrate:rollback --all')
+    execSync('npm run knex migrate:latest')
+  })
+
+  it('should create a new meal', async () => {
+    const mockUser = {
+      email: 'test@example.com',
+      password: 'test123'
+    }
+
+    const mockMeal = {
+      name: 'McDonalds',
+      description: 'Big Tasy + Milk Shake',
+      isDietMeal: false
+    }
+
+    await request(app.server).post('/register').send(mockUser)
+    const logIn = await request(app.server).post('/login').send(mockUser)
+
+    const cookies = logIn.get('Set-Cookie')
+
+    const response = await request(app.server)
+      .post('/meal')
+      .set('Cookie', cookies)
+      .send(mockMeal)
+
+    expect(response.statusCode).toBe(201)
+    expect(response.body.message).toBe('Meal successfully created!')
   })
 })
