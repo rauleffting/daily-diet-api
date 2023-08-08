@@ -14,7 +14,7 @@ export async function userRoutes (app: FastifyInstance): Promise<void> {
         .first()
 
       if (userExists) {
-        return await reply.status(409).send({ message: 'E-mail já cadastrado!' }) // Changed status code to 409 Conflict
+        return await reply.status(409).send({ message: 'Email already registered!' })
       }
 
       const hashedPassword = await hash(password, 8)
@@ -25,9 +25,9 @@ export async function userRoutes (app: FastifyInstance): Promise<void> {
         password: hashedPassword
       })
 
-      return await reply.status(201).send({ message: 'User successfully created!' }) // Using 201 for successful resource creation
+      return await reply.status(201).send({ message: 'User successfully created!' })
     } catch (error) {
-      console.error(error) // Log the error for debugging purposes
+      console.error(error)
       return await reply.status(500).send({ message: 'Error creating user!' })
     }
   })
@@ -41,13 +41,13 @@ export async function userRoutes (app: FastifyInstance): Promise<void> {
         .first()
 
       if (!user) {
-        return await reply.status(401).send({ message: 'E-mail e/ou senha incorretos.' }) // Changed status code to 401 Unauthorized
+        return await reply.status(401).send({ message: 'Wrong email or password.' })
       }
 
       const passwordMatched = await compare(password, user.password)
 
       if (!passwordMatched) {
-        return await reply.status(401).send({ message: 'E-mail e/ou senha incorretos.' }) // Changed status code to 401 Unauthorized
+        return await reply.status(401).send({ message: 'Wrong email or password.' })
       }
 
       let sessionId = request.cookies.sessionId
@@ -60,9 +60,9 @@ export async function userRoutes (app: FastifyInstance): Promise<void> {
         })
       }
 
-      return await reply.status(200).send({ message: 'User successfully logged!' }) // Using 200 for successful login
+      return await reply.status(200).send({ message: 'User successfully logged!' })
     } catch (error) {
-      console.error(error) // Log the error for debugging purposes
+      console.error(error)
       return await reply.status(500).send({ message: 'Error trying to log in!' })
     }
   })
