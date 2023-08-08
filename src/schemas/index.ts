@@ -11,3 +11,9 @@ export const createUserBodySchema = z.object({
   email: z.string(),
   password: z.string()
 })
+
+export const createMealBodySchema = z.object({
+  name: z.string(),
+  description: z.string(),
+  isDietMeal: z.boolean()
+})
