@@ -30,4 +30,22 @@ export async function mealRoutes (app: FastifyInstance): Promise<void> {
       return await reply.status(500).send({ message: 'Error creating meal!' })
     }
   })
+
+  app.get('/meal', async (request, reply) => {
+    try {
+      const { sessionId } = request.cookies
+
+      const meals = await knex('meals')
+        .where({ session_id: sessionId })
+        .select()
+
+      if (!meals) {
+        return await reply.status(404).send({ message: 'No meals found!' })
+      }
+      return await reply.status(200).send(meals)
+    } catch (error) {
+      console.error(error)
+      return await reply.status(500).send({ message: 'Error while searching!' })
+    }
+  })
 }
