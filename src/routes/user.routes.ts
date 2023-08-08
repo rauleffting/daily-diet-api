@@ -13,7 +13,7 @@ export async function userRoutes (app: FastifyInstance): Promise<void> {
         .where({ email })
         .first()
 
-      if (userExists != null) {
+      if (userExists) {
         return await reply.status(509).send({ message: 'E-mail já cadastrado!' })
       }
 
@@ -40,7 +40,7 @@ export async function userRoutes (app: FastifyInstance): Promise<void> {
         .where({ email })
         .first()
 
-      if (user === null) {
+      if (!user) {
         return await reply.status(509).send({ message: 'E-mail e/ou senha incorretos.' })
       }
 
