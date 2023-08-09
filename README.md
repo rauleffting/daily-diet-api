@@ -8,7 +8,6 @@ The Daily Diet API is a backend service designed to manage and track daily meals
 Features
 --------
 
-*   **Endpoint Updates**: The API recently added an `updated_at` parameter to the edit meal endpoint. [View Commit](https://github.com/rauleffting/daily-diet-api/commit/64932b4248cacb9456eb1b5e6478a5a28256a457)
 *   **Continuous Integration**: Automated CI is set up using GitHub Actions. [View Workflow](https://github.com/rauleffting/daily-diet-api/tree/main/.github/workflows)
 *   **Commit Linting**: The repository uses Husky and Commitlint to ensure consistent commit messages.
 *   **Database Migrations**: Knex is used for database migrations and configurations.
