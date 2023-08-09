@@ -95,4 +95,34 @@ describe('Meal routes', () => {
     expect(response.statusCode).toBe(201)
     expect(response.body.message).toBe('Meal successfully created!')
   })
+
+  it('should get all meals', async () => {
+    const mockUser = {
+      email: 'test@example.com',
+      password: 'test123'
+    }
+
+    const mockMeal = {
+      name: 'McDonalds',
+      description: 'Big Tasy + Milk Shake',
+      isDietMeal: false
+    }
+
+    await request(app.server).post('/register').send(mockUser)
+    const logIn = await request(app.server).post('/login').send(mockUser)
+
+    const cookies = logIn.get('Set-Cookie')
+
+    await request(app.server)
+      .post('/meal')
+      .set('Cookie', cookies)
+      .send(mockMeal)
+
+    const response = await request(app.server)
+      .get('/meal')
+      .set('Cookie', cookies)
+
+    expect(response.statusCode).toBe(200)
+    expect(response.body).toBeDefined();
+  })
 })
