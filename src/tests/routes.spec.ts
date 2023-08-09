@@ -154,8 +154,6 @@ describe('Meal routes', () => {
 
     const firstMealId: string = meals.body[0].id
 
-    console.log(firstMealId)
-
     const response = await request(app.server)
       .get(`/meal/${firstMealId}`)
       .set('Cookie', cookies)
@@ -164,7 +162,7 @@ describe('Meal routes', () => {
     expect(response.body).toBeDefined()
   })
 
-  it('should get meal by id', async () => {
+  it('should update meal by id', async () => {
     const mockUser = {
       email: 'test@example.com',
       password: 'test123'
@@ -192,9 +190,16 @@ describe('Meal routes', () => {
 
     const firstMealId: string = meals.body[0].id
 
+    const mockNewMealData = {
+      name: 'Bobs',
+      description: 'Trio Double Cheese',
+      isDietMeal: false
+    }
+
     const response = await request(app.server)
-      .get(`/meal/${firstMealId}`)
+      .put(`/meal/${firstMealId}`)
       .set('Cookie', cookies)
+      .send(mockNewMealData)
 
     expect(response.statusCode).toBe(200)
     expect(response.body).toBeDefined()
