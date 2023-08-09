@@ -123,6 +123,80 @@ describe('Meal routes', () => {
       .set('Cookie', cookies)
 
     expect(response.statusCode).toBe(200)
-    expect(response.body).toBeDefined();
+    expect(response.body).toBeDefined()
+  })
+
+  it('should get meal by id', async () => {
+    const mockUser = {
+      email: 'test@example.com',
+      password: 'test123'
+    }
+
+    const mockMeal = {
+      name: 'McDonalds',
+      description: 'Big Tasy + Milk Shake',
+      isDietMeal: false
+    }
+
+    await request(app.server).post('/register').send(mockUser)
+    const logIn = await request(app.server).post('/login').send(mockUser)
+
+    const cookies = logIn.get('Set-Cookie')
+
+    await request(app.server)
+      .post('/meal')
+      .set('Cookie', cookies)
+      .send(mockMeal)
+
+    const meals = await request(app.server)
+      .get('/meal')
+      .set('Cookie', cookies)
+
+    const firstMealId: string = meals.body[0].id
+
+    console.log(firstMealId)
+
+    const response = await request(app.server)
+      .get(`/meal/${firstMealId}`)
+      .set('Cookie', cookies)
+
+    expect(response.statusCode).toBe(200)
+    expect(response.body).toBeDefined()
+  })
+
+  it('should get meal by id', async () => {
+    const mockUser = {
+      email: 'test@example.com',
+      password: 'test123'
+    }
+
+    const mockMeal = {
+      name: 'McDonalds',
+      description: 'Big Tasy + Milk Shake',
+      isDietMeal: false
+    }
+
+    await request(app.server).post('/register').send(mockUser)
+    const logIn = await request(app.server).post('/login').send(mockUser)
+
+    const cookies = logIn.get('Set-Cookie')
+
+    await request(app.server)
+      .post('/meal')
+      .set('Cookie', cookies)
+      .send(mockMeal)
+
+    const meals = await request(app.server)
+      .get('/meal')
+      .set('Cookie', cookies)
+
+    const firstMealId: string = meals.body[0].id
+
+    const response = await request(app.server)
+      .get(`/meal/${firstMealId}`)
+      .set('Cookie', cookies)
+
+    expect(response.statusCode).toBe(200)
+    expect(response.body).toBeDefined()
   })
 })
