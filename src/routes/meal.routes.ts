@@ -91,4 +91,23 @@ export async function mealRoutes (app: FastifyInstance): Promise<void> {
       return await reply.status(500).send({ message: 'Error while updating!' })
     }
   })
+
+  app.delete('/meal/:id', async (request, reply) => {
+    try {
+      const { id } = getMealParamsSchema.parse(request.params)
+      const { sessionId } = request.cookies
+
+      const deleteMeal = await knex('meals')
+        .where({ session_id: sessionId, id })
+        .delete()
+
+      if (!deleteMeal) {
+        return await reply.status(404).send({ message: 'Meal not found!' })
+      }
+      return await reply.status(200).send({ message: 'Meal successfully deleted!' })
+    } catch (error) {
+      console.error(error)
+      return await reply.status(500).send({ message: 'Error while deleting!' })
+    }
+  })
 }
