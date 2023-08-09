@@ -7,6 +7,7 @@
   },
   "scripts": {
     "dev": "tsx watch src/server.ts",
+    "predev": "knex -- migrate:latest",
     "lint": "eslint src --ext .ts --fix",
     "knex": "ts-node ./node_modules/knex/bin/cli",
     "migrate": "knex -- migrate:latest",
