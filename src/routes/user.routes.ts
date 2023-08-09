@@ -3,6 +3,7 @@ import { knex } from '../database'
 import { randomUUID } from 'node:crypto'
 import { compare, hash } from 'bcrypt'
 import { createUserBodySchema } from '../schemas'
+import { checkSessionIdExists } from '../middlewares/check-session-id-exists'
 
 export async function userRoutes (app: FastifyInstance): Promise<void> {
   app.post('/register', async (request, reply) => {
@@ -64,6 +65,54 @@ export async function userRoutes (app: FastifyInstance): Promise<void> {
     } catch (error) {
       console.error(error)
       return await reply.status(500).send({ message: 'Error trying to log in!' })
+    }
+  })
+
+  app.get('/metrics', { preHandler: [checkSessionIdExists] }, async (request, reply) => {
+    try {
+      const { sessionId } = request.cookies
+
+      const meals = await knex('meals')
+        .where({ session_id: sessionId })
+        .select()
+
+      const dietMeals = await knex('meals')
+        .where({ session_id: sessionId, is_diet_meal: true })
+        .select()
+
+      let oldSequencyArray = []
+      let currentSequencyArray = []
+      let bestSequencyArray = []
+
+      for (let i = 0; i < meals.length; i++) {
+        if (meals[i].is_diet_meal) {
+          currentSequencyArray.push(meals[i])
+        } else {
+          if (currentSequencyArray.length >= oldSequencyArray.length) {
+            oldSequencyArray = currentSequencyArray
+          }
+          currentSequencyArray = []
+        }
+      }
+
+      currentSequencyArray.length >= oldSequencyArray.length
+        ? bestSequencyArray = currentSequencyArray
+        : bestSequencyArray = oldSequencyArray
+
+      const metrics = {
+        total_of_meals: meals.length,
+        total_of_diet_meals: dietMeals.length,
+        total_of_no_diet_meals: meals.length - dietMeals.length,
+        best_sequency_meals: bestSequencyArray
+      }
+
+      if (!metrics) {
+        return await reply.status(404).send({ message: 'Metrics not found!' })
+      }
+      return await reply.status(200).send(metrics)
+    } catch (error) {
+      console.error(error)
+      return await reply.status(500).send({ message: 'Error while searching!' })
     }
   })
 }
