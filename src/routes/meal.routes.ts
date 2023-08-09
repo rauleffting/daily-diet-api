@@ -67,4 +67,28 @@ export async function mealRoutes (app: FastifyInstance): Promise<void> {
       return await reply.status(500).send({ message: 'Error while searching!' })
     }
   })
+
+  app.put('/meal/:id', async (request, reply) => {
+    try {
+      const { id } = getMealParamsSchema.parse(request.params)
+      const { sessionId } = request.cookies
+      const { name, description, isDietMeal } = createMealBodySchema.parse(request.body)
+
+      const updateMeal = await knex('meals')
+        .where({ session_id: sessionId, id })
+        .update({
+          name,
+          description,
+          is_diet_meal: isDietMeal
+        })
+
+      if (!updateMeal) {
+        return await reply.status(404).send({ message: 'Meal not found!' })
+      }
+      return await reply.status(200).send({ message: 'Meal successfully updated!' })
+    } catch (error) {
+      console.error(error)
+      return await reply.status(500).send({ message: 'Error while updating!' })
+    }
+  })
 }
