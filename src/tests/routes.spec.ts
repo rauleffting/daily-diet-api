@@ -58,6 +58,49 @@ describe('User routes', () => {
     expect(response.header['set-cookie'][0]).toContain('sessionId=')
     expect(response.header['set-cookie'][0]).toContain('Max-Age=')
   })
+
+  it('should allow user to access their metrics', async () => {
+    const mockUser = {
+      email: 'test@example.com',
+      password: 'test123'
+    }
+
+    const mockMeal1 = {
+      name: 'McDonalds',
+      description: 'Big Tasty + Milk Shake',
+      isDietMeal: false
+    }
+
+    const mockMeal2 = {
+      name: 'Salad Bar',
+      description: 'Healthy Salad',
+      isDietMeal: true
+    }
+
+    await request(app.server).post('/register').send(mockUser)
+    const logIn = await request(app.server).post('/login').send(mockUser)
+    const cookies = logIn.get('Set-Cookie')
+
+    await request(app.server)
+      .post('/meal')
+      .set('Cookie', cookies)
+      .send(mockMeal1)
+
+    await request(app.server)
+      .post('/meal')
+      .set('Cookie', cookies)
+      .send(mockMeal2)
+
+    const response = await request(app.server)
+      .get('/metrics')
+      .set('Cookie', cookies)
+
+    expect(response.statusCode).toBe(200)
+    expect(response.body.total_of_meals).toBe(2)
+    expect(response.body.total_of_diet_meals).toBe(1)
+    expect(response.body.total_of_no_diet_meals).toBe(1)
+    expect(response.body.best_sequency_meals.length).toBe(1)
+  })
 })
 
 describe('Meal routes', () => {
