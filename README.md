@@ -21,6 +21,44 @@ Setup
 3.  Set up your environment variables based on the `.env.example` and `.env.test.example` files.
 4.  Start the server using `npm run dev`.
 
+Routes
+------
+
+* `POST - /register`
+
+  Create a new user, receiving email and password in the request body.
+
+* `POST - /login`
+
+  Log in, receiving email and password in the request body.
+
+* `GET - /metrics`
+
+  Show metrics such as total number of registered meals, total number of meals within the diet, and best meals sequency.
+
+* `POST - /meal`
+
+  Create a new meal, receiving name, description, and is_diet_meal in the request body.
+
+* `GET - /meal`
+
+  List all diet records in the database.
+ 
+* `GET - /meal/:id`
+
+  List a specific diet in the database.
+
+* `DELETE - /meal/:id`
+
+  Delete a specific diet in the database.
+
+* `PUT - /meal/:id`
+
+  Update a specific diet in the database.
+
+
+
+
 Contributing
 ------------
 
