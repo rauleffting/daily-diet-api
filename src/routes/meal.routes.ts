@@ -79,7 +79,8 @@ export async function mealRoutes (app: FastifyInstance): Promise<void> {
         .update({
           name,
           description,
-          is_diet_meal: isDietMeal
+          is_diet_meal: isDietMeal,
+          updated_at: knex.fn.now()
         })
 
       if (!updateMeal) {
