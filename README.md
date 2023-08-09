@@ -68,7 +68,3 @@ License
 -------
 
 This project is open-sourced under the MIT License.
-
-* * *
-
-Note: This is a basic README based on the available information from the GitHub repository. You might want to add more details, such as API endpoints, usage examples, and more, based on the actual functionality and design of the API.
