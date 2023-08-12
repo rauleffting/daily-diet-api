@@ -1,9 +1,9 @@
-Daily Diet API
+Daily Diet API ![Fastify](https://img.shields.io/badge/fastify-%23000000.svg?style=for-the-badge&logo=fastify&logoColor=white)
 ==============
 
 ![GitHub stars](https://img.shields.io/github/stars/rauleffting/daily-diet-api?style=flat-square) ![GitHub forks](https://img.shields.io/github/forks/rauleffting/daily-diet-api?style=flat-square) ![GitHub watchers](https://img.shields.io/github/watchers/rauleffting/daily-diet-api?style=flat-square) ![GitHub issues](https://img.shields.io/github/issues/rauleffting/daily-diet-api?style=flat-square)
 
-The Daily Diet API is a backend service designed to manage and track daily meals. Built with TypeScript, it offers a robust set of features to ensure that meal data is handled efficiently.
+The Daily Diet API is a backend service designed to manage and track daily meals. Built with TypeScript, Node.js, and Fastify, it offers robust features to ensure that meal data is handled efficiently.
 
 Features
 --------
